@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APK 下載頁</title>
+<style>
+  :root {
+    --bg: #f4f6fa;
+    --card: #ffffff;
+    --ink: #16233a;
+    --muted: #64748b;
+    --line: #e4e9f0;
+    --brand: #2563eb;
+    --brand-dark: #1d4ed8;
+    --accent: #0d9488;
+    --amber-bg: #fffbeb;
+    --amber-line: #fcd34d;
+    --amber-ink: #92400e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 56px; }
+  .notice {
+    display: none;
+    background: var(--amber-bg);
+    border: 1px solid var(--amber-line);
+    color: var(--amber-ink);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .notice code { background: #fef3c7; padding: 1px 6px; border-radius: 5px; }
+  .hero {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 18px;
+  }
+  .brandrow { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+  .logo {
+    width: 56px; height: 56px; flex: 0 0 56px;
+    background: var(--brand); border-radius: 15px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .appname { font-size: 21px; font-weight: 600; margin: 0 0 2px; }
+  .subtitle { font-size: 13px; color: var(--muted); margin: 0; }
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    color: var(--accent); background: #ecfdf5;
+    border: 1px solid #a7f3d0; border-radius: 999px;
+    padding: 2px 10px; margin-left: 8px; vertical-align: 2px;
+  }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+  .meta span {
+    font-size: 12px; color: var(--muted);
+    background: #f7f9fc; border: 1px solid var(--line);
+    border-radius: 8px; padding: 4px 10px;
+  }
+  .cols { display: grid; grid-template-columns: 1fr 200px; gap: 24px; align-items: center; }
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 15px 20px; border: none; border-radius: 12px;
+    background: var(--brand); color: #fff; font-size: 16px; font-weight: 600;
+    cursor: pointer; font-family: inherit; transition: background .15s;
+  }
+  .btn:hover { background: var(--brand-dark); }
+  .btn:disabled { background: #94a3b8; cursor: not-allowed; }
+  .btn-ghost {
+    display: block; width: 100%; margin-top: 10px;
+    padding: 9px; border: 1px solid var(--line); border-radius: 10px;
+    background: #fff; color: var(--muted); font-size: 13px;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn-ghost:hover { border-color: var(--brand); color: var(--brand); }
+  .hint { font-size: 12px; color: var(--muted); margin: 12px 0 0; }
+  .qrbox {
+    border: 1px solid var(--line); border-radius: 14px;
+    padding: 14px; text-align: center; background: #fff;
+  }
+  #qrcode { display: flex; justify-content: center; align-items: center; min-height: 168px; }
+  #qrcode img, #qrcode canvas { width: 168px !important; height: 168px !important; }
+  .qrcap { font-size: 11px; color: var(--muted); margin: 10px 0 0; line-height: 1.5; }
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 16px; padding: 24px 28px; margin-bottom: 18px;
+  }
+  .card h2 { font-size: 16px; font-weight: 600; margin: 0 0 16px; }
+  .card ul { margin: 0; padding-left: 20px; font-size: 14px; color: #334155; }
+  .card li { margin-bottom: 7px; }
+  .steps { list-style: none; margin: 0; padding: 0; }
+  .steps li {
+    display: flex; gap: 14px; align-items: flex-start;
+    font-size: 14px; margin-bottom: 16px;
+  }
+  .steps li:last-child { margin-bottom: 0; }
+  .num {
+    flex: 0 0 26px; height: 26px; border-radius: 50%;
+    background: #eff6ff; color: var(--brand);
+    font-size: 13px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .steps b { display: block; font-weight: 600; margin-bottom: 2px; }
+  .steps span { color: var(--muted); font-size: 13px; }
+  .hash {
+    background: #f7f9fc; border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 14px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; color: #334155; word-break: break-all; position: relative;
+  }
+  .hash button {
+    position: absolute; right: 8px; top: 8px;
+    border: 1px solid var(--line); background: #fff; border-radius: 6px;
+    font-size: 11px; padding: 3px 8px; cursor: pointer; color: var(--muted);
+  }
+  .foot { text-align: center; font-size: 12px; color: var(--muted); padding: 8px 0 0; }
+  @media (max-width: 640px) {
+    .wrap { padding: 20px 14px 40px; }
+    .hero { padding: 22px 18px; }
+    .cols { grid-template-columns: 1fr; }
+    .qrbox { max-width: 220px; margin: 0 auto; }
+    .card { padding: 20px 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="notice" id="notice">
+    尚未設定 APK 連結。請編輯本檔案底部的 <code>CONFIG.apkUrl</code>，貼上你的分享連結後重新開啟。
+  </div>
+
+  <div class="hero">
+    <div class="brandrow">
+      <div class="logo">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M5 17v3h14v-3"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="appname" id="appName">App 名稱<span class="badge">Android 版</span></h1>
+        <p class="subtitle" id="subtitle">最新版本下載</p>
+      </div>
+    </div>
+
+    <div class="meta">
+      <span id="mVersion">版本 —</span>
+      <span id="mDate">更新 —</span>
+      <span id="mSize">大小 —</span>
+    </div>
+
+    <div class="cols">
+      <div>
+        <button class="btn" id="downloadBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M5 17v3h14v-3"/>
+          </svg>
+          <span id="btnText">下載 APK</span>
+        </button>
+        <button class="btn-ghost" id="copyBtn">複製下載連結</button>
+        <p class="hint" id="hint">若在 App 內無法下載，請點右上角「···」→「在瀏覽器開啟」。</p>
+      </div>
+      <div class="qrbox">
+        <div id="qrcode"></div>
+        <p class="qrcap" id="qrcap">掃碼開啟下載頁</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>本次更新</h2>
+    <ul id="changelog"></ul>
+  </div>
+
+  <div class="card">
+    <h2>安裝步骤（第一次安裝請看）</h2>
+    <ol class="steps">
+      <li><div class="num">1</div><div><b>下載 APK 檔案</b><span>點上方的下載按鈕，或掃 QR code。</span></div></li>
+      <li><div class="num">2</div><div><b>開啟檔案</b><span>下載完成後點開啟，系統可能問「是否允許安裝未知應用程式」。</span></div></li>
+      <li><div class="num">3</div><div><b>允許此來源</b><span>點「設定」→ 打開「允許安裝未知應用程式」→ 返回。</span></div></li>
+      <li><div class="num">4</div><div><b>完成安裝</b><span>再次點 APK，按「安裝」即可。之後更新直接覆蓋安裝，不用再設定。</span></div></li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>檔案驗證（選用）</h2>
+    <div class="hash" id="hashBox">SHA-256：待填上</div>
+    <p class="hint" style="margin-top:10px">若需要確認檔案未被竄改，可比對此雜湊值。Mac  terminal 執行 <code>shasum -a 256 檔案.apk</code>。</p>
+  </div>
+
+  <p class="foot">本檔案僅供授權用戶下載 · 如有問題請聯絡客服</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+  const CONFIG = {
+    appName: "紅果免費短劇",
+    subtitle: "Android 最新版本下載",
+    version: "7.4.2.32",
+    date: "2026-11-21",
+    size: "約 140 MB",
+    apkUrl: "https://github.com/liveplusishop/hongguo-apk-download/releases/download/v7.4.2.32/hongguo-short-drama_7.4.2.32.apk",
+    sha256: "cb449c677d731bdaec5bf026a582daabfdc5b44d2689617078570010cd2014c3",
+    changelog: [
+      "紅果免費短劇 Android 版 7.4.2.32",
+      "首次上架，點擊下載即可安裝"
+    ]
+  };
+
+  const isPlaceholder = CONFIG.apkUrl.indexOf("PASTE_YOUR") !== -1;
+  document.getElementById("notice").style.display = isPlaceholder ? "block" : "none";
+  document.getElementById("appName").innerHTML = CONFIG.appName + '<span class="badge">Android 版</span>';
+  document.getElementById("subtitle").textContent = CONFIG.subtitle;
+  document.getElementById("mVersion").textContent = "版本 " + CONFIG.version;
+  document.getElementById("mDate").textContent = "更新 " + CONFIG.date;
+  document.getElementById("mSize").textContent = "大小 " + CONFIG.size;
+  document.getElementById("btnText").textContent = isPlaceholder ? "請先設定 APK 連結" : "下載 APK v" + CONFIG.version;
+  document.getElementById("downloadBtn").disabled = isPlaceholder;
+
+  document.getElementById("changelog").innerHTML = CONFIG.changelog.map(x => "<li>" + x + "</li>").join("");
+  document.getElementById("hashBox").innerHTML = "SHA-256：" + CONFIG.sha256 + '<button id="hashCopy">複製</button>';
+
+  document.getElementById("downloadBtn").addEventListener("click", () => {
+    if (!isPlaceholder) window.location.href = CONFIG.apkUrl;
+  });
+
+  function copyText(text, btn, original) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = "已複製";
+      setTimeout(() => { btn.textContent = original; }, 1600);
+    }).catch(() => {
+      const ta = document.createElement("textarea");
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      document.execCommand("copy"); document.body.removeChild(ta);
+      btn.textContent = "已複製";
+      setTimeout(() => { btn.textContent = original; }, 1600);
+    });
+  }
+
+  document.getElementById("copyBtn").addEventListener("click", function () {
+    if (isPlaceholder) { alert("請先在 CONFIG.apkUrl 貼上你的 APK 連結"); return; }
+    copyText(CONFIG.apkUrl, this, "複製下載連結");
+  });
+  document.getElementById("hashCopy").addEventListener("click", function () {
+    copyText(CONFIG.sha256, this, "複製");
+  });
+
+  if (typeof QRCode === "function") {
+    new QRCode(document.getElementById("qrcode"), {
+      text: window.location.href,
+      width: 168, height: 168,
+      colorDark: "#16233a", colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  } else {
+    document.getElementById("qrcode").textContent = "QR 套件載入失敗，請檢查網路";
+  }
+  if (window.location.protocol === "file:") {
+    document.getElementById("qrcap").textContent = "部署到網路空間後，掃碼即可開啟本頁";
+  }
+</script>
+</body>
+</html>
